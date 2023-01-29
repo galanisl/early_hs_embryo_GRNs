@@ -25,4 +25,5 @@ The following scripts and files are provided:
     - `sce_integrated_lateBlast_clean.RData`: `SingleCellExperiment` experiment object with the scRNA-seq data used in this work.
    - `icm_tf_binding.rds`: List of ICM-specific TF-gene interactions used in this work.
    - `te_tf_binding.rds`: List of TE-specific TF-gene interactions used in this work.
-   - `regulators.rds`: List of TF with enriched motifs in the ICM and TE chromatin accessibility data. 
+   - `regulators.rds`: List of TF with enriched motifs in the ICM and TE chromatin accessibility data.
+   - `Homo_sapiens_TF.txt`: List of human TFs according to the Animal Transcription Factor Database.

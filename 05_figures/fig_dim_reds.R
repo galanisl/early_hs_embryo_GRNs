@@ -2,7 +2,7 @@
 library(scater)
 library(patchwork)
 
-load("../data/sce_integrated_lateBlast_clean.RData")
+load("../02_data_processing/final_data/sce_integrated_lateBlast_clean.RData")
 
 col_cell <- c("Epiblast" = "#009c00", 
              "Trophectoderm" = "#287dff", 

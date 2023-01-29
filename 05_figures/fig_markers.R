@@ -1,13 +1,13 @@
 library(scater)
 library(patchwork)
 
-load("data/sce_integrated_lateBlast_clean.RData")
+load("../02_data_processing/final_data/sce_integrated_lateBlast_clean.RData")
 
 col_cell <- c("Epiblast" = "#009c00", 
               "Trophectoderm" = "#287dff", 
               "Primitive endoderm" = "#ff284b")
 
-mrk_genes <- c("Ref", "NANOG", "GATA3", "SOX17")
+mrk_genes <- c("Ref", "NANOG", "GATA4", "CDX2")
 
 p <- vector("list", length(mrk_genes))
 names(p) <- mrk_genes

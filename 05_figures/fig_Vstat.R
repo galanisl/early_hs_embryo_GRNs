@@ -33,7 +33,7 @@ read_organise <- function(fpath){
 # Load data into memory ---------------------------------------------------
 
 # Path to the CVS files with the results
-dpath <- "~/Dropbox (The Francis Crick)/net_inference/Tom_outputs/"
+dpath <- "path/to/GRN/inferences"
 fnames <- list.files(dpath, pattern = "^TFnetV")
 
 Vstat <- map_dfr(paste0(dpath, fnames), read_organise)

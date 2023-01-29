@@ -54,7 +54,7 @@ get_mrk_activity <- function(net, cell_type, mrks, method, normalisation){
   return(net_edg)
 }
 
-dpath <- "~/Dropbox (The Francis Crick)/net_inference/Tom_outputs/"
+dpath <- "path/to/GRN/inferences"
 
 tb_files <- list.files(dpath, pattern = "*.csv")
 
@@ -140,5 +140,5 @@ for(i in seq_along(ctypes)){
 p_activ_grid <- wrap_plots(p_activ, nrow = 4, ncol = 4) + 
   plot_layout(guides = "collect") 
 
-ggsave(filename = paste0("figs/mrk_heatmap_YESNO_v2.svg"), 
+ggsave(filename = paste0("figs/mrk_heatmap_YESNO.svg"), 
        plot = p_activ_grid, width = 220, height = 190, units = "mm")

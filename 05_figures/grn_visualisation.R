@@ -4,13 +4,13 @@ library(igraph)
 library(visNetwork)
 
 ctype <- "Epiblast"
-dpath <- paste0("~/Dropbox (The Francis Crick)/net_inference/Tom_outputs/TFnetMIres_tpm_", ctype, ".csv")
+dpath <- paste0("path_to_GRN_inferences/TFnetMIres_tpm_", ctype, ".csv")
 tf_colour <- c("Epiblast" = "#009c00", "TE" = "#287dff", "PE" = "#ff284b")
 gn_colour <- c("Epiblast" = "#a1d99b", "TE" = "#9ecae1", "PE" = "#fc9272")
 
 mrk <- c("Epiblast" = "NANOG", "TE" = "GATA3", "PE" = "SOX17")
 
-tfs <- read_tsv("~/Dropbox (The Francis Crick)/net_inference/data/Homo_sapiens_TF.txt")
+tfs <- read_tsv("../02_data_processing/final_data/Homo_sapiens_TF.txt")
 
 # GRN around gene ---------------------------------------------------------
 
@@ -76,12 +76,12 @@ visIgraph(tf_tf)
 
 # GRN around genes
 tb <- igraph::as_data_frame(gene_grn)
-write_tsv(tb, paste0("../figs/grn_vis/", mrk[ctype], "_", ctype, "_TPM_MI.tsv"))
+write_tsv(tb, paste0("grn_vis/", mrk[ctype], "_", ctype, "_TPM_MI.tsv"))
 
 # Top interactions
 tb <- igraph::as_data_frame(top_grn)
-write_tsv(tb, paste0("../figs/grn_vis/TOP_", ctype, "_TPM_MI.tsv"))
+write_tsv(tb, paste0("grn_vis/TOP_", ctype, "_TPM_MI.tsv"))
 
 # TF-TF
 tb <- igraph::as_data_frame(tf_tf)
-write_tsv(tb, paste0("../figs/grn_vis/TF-TF_", mrk[ctype], "_", ctype, "_TPM_MI.tsv"))
+write_tsv(tb, paste0("grn_vis/TF-TF_", mrk[ctype], "_", ctype, "_TPM_MI.tsv"))
