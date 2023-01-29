@@ -31,13 +31,14 @@ sel_ctype <- analysis_opts$ctype[as.integer(args[1])]
 sel_norm <- analysis_opts$norm_method[as.integer(args[1])]
 sel_inf <- analysis_opts$inf_method[as.integer(args[1])]
 
-exprMatr <- readRDS(paste0("data/", sel_ctype, "_", sel_norm, ".rds"))
+# Normalised expression data in Matrix format (see ../02_data_processing/02_scrnaseq_exprdata_to_matrix.R)
+exprMatr <- readRDS(paste0("../02_data_processing/final_data/", sel_ctype, "_", sel_norm, ".rds"))
 exprMatr <- exprMatr[rowSums(exprMatr) > 0, ]
 
 if(sel_ctype == "te"){
-  atac <- readRDS("data/te_tf_binding.rds")
+  atac <- readRDS("../02_data_processing/final_data/te_tf_binding.rds")
 }else{
-  atac <- readRDS("data/icm_tf_binding.rds")  
+  atac <- readRDS("./02_data_processing/final_data/icm_tf_binding.rds")  
 }
 atac <- atac %>% 
   select(tf, nearest_prom) %>% 
@@ -48,7 +49,7 @@ atac <- atac %>%
 exprMatr <- exprMatr[intersect(rownames(exprMatr), 
                                union(atac$regulatoryGene, atac$targetGene)), ]
 
-regulators <- readRDS("data/regulators.rds")
+regulators <- readRDS("./02_data_processing/final_data/regulators.rds")
 regulators <- regulators[regulators %in% rownames(exprMatr)]
 
 if(grepl("CA", sel_inf)){
