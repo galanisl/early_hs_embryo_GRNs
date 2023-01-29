@@ -3,6 +3,7 @@
 The following scripts and files are provided:
 
 - `dw_fastq.R`: Provides functions to download FASTQ files from an FTP server given a CSV file with sample metadata and FTP addresses.
+- `sb_dw_fastq`: Example `sbatch` script that calls `dw_fastq.R` to download FASTQ files in a computer cluster with the SLURM queueing system.
 - `atacseq`
     - `design_hs_atac.csv`: CSV file with the list of liATAC-seq samples used in this study.
     - `nf_atac.sh`: Nextflow call used to preprocess the liATAC-seq data with the nf-core/atacseq v1.1.0 pipeline.

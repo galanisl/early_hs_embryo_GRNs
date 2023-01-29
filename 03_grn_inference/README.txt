@@ -1,1 +1,0 @@
-Implementation of the different methods for GRN inference.

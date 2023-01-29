@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#SBATCH -J dwf                                    # Job name
+#SBATCH -p cpu                                    # Queue name
+#SBATCH -N 1                                      # Number of nodes
+#SBATCH -n 16                                     # Number of cores
+#SBATCH --mem=16G                                 # Memory pool for all cores
+#SBATCH -t 3-00:00:00                             # Run time (hh:mm:ss)
+#SBATCH -e dwf.err                                # STDERR
+#SBATCH -o dwf.out                                # STDOUT
+#SBATCH --mail-type=ALL                           # Type of notifications sent by e-mail
+#SBATCH --mail-user=YOUR_EMAIL@EMAIL.COM          # e-mail address
+
+# Load all necessary modules
+module load R/3.5.1-foss-2018b
+
+#Rscript dw_fastq.R --file CRA000297/human/dnase/dw_hs_dnase.csv --dir CRA000297/human/dnase/fastq ##DONE!
+#Rscript dw_fastq.R --file CRA000297/human/rna/dw_hs_rna.csv --dir CRA000297/human/rna/fastq ##DONE!
+#Rscript dw_fastq.R --file CRA000297/mouse/rna/dw_mm_rna.csv --dir CRA000297/mouse/rna/fastq ##DONE!
+#Rscript dw_fastq.R --file CRA000297/mouse/dnase/dw_mm_dnase.csv --dir CRA000297/mouse/dnase/fastq ##DONE!
+#Rscript dw_fastq.R --file PRJNA494280/human/atac/dw_hs_atac.csv --dir PRJNA494280/human/atac/fastq ##DONE!
+#Rscript dw_fastq.R --file PRJNA494280/human/rna/dw_hs_rna.csv --dir PRJNA494280/human/rna/fastq ##DONE!
+#Rscript dw_fastq.R --file PRJNA494280/mouse/atac/dw_mm_atac.csv --dir PRJNA494280/mouse/atac/fastq ##DONE!
+#Rscript dw_fastq.R --file PRJNA494280/mouse/rna/dw_mm_rna.csv --dir PRJNA494280/mouse/rna/fastq ##DONE!
+#Rscript dw_fastq.R --file PRJNA277181/sample_details.csv --dir PRJNA277181/fastq
+#Rscript dw_fastq.R --file PRJNA153427/sample_details.csv --dir PRJNA153427/fastq
+#Rscript dw_fastq.R --file E-MTAB-3929/sample_details.csv --dir E-MTAB-3929/fastq
+Rscript dw_fastq.R --file PRJEB26646/sample_details.csv --dir PRJEB26646/fastq
+
+
+ 

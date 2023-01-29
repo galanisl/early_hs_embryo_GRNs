@@ -7,9 +7,9 @@ Gregorio Alanis-Lobato<sup>1</sup>, Thomas E. Bartlett<sup>2</sup>, Qiulin Huang
 3. The Centre for Trophoblast Research, Department of Physiology, Development and Neuroscience, University of Cambridge, Cambridge CB2 3EG, UK.
 4. Bourn Hall Clinic, Bourn, Cambridge, CB23 2TN.
 
-## Introduction
+## Background
 
-Under construction...
+Recent advances in single cell -omics have been transformative in the characterisation of challenging-to-study biological contexts, including when the source material is extremely precious, such as in the early human embryo. Single cell datasets bring technical challenges to infer transcription factor-gene regulatory interactions, such as low read-depth leading to zero inflated data. Here we have systematically assessed the application of four different machine learning linear or non-linear gene regulatory network prediction strategies to single cell simulated and human embryo transcriptome datasets. We have also compared how the method of gene expression normalisation impacts on regulatory network predictions. Integrating chromatin accessibility datasets together with transcript expression datasets improved the reproducibility of the predicted gene regulatory networks. We found that the application of a non-linear network prediction method based on mutual information (MI) to single cell transcriptome datasets refined with chromatin accessibility (CA) data (called MICA), exhibited higher reproducibility compared to the alternative network interference methods tested. Moreover, MICA was used to make predictions about GRNs in the preimplantation human embryo, which were supported by previous findings in other developmental and stem cell contexts. Based on the gene regulatory networks predicted by MICA, we discovered co-localisation of the AP-1 transcription factor subunit proto-oncogene JUND and the TFAP2C transcription factor AP-2 in human preimplantation embryos. Overall, our comparative analysis of gene regulatory network prediction methods defines a pipeline that can be implemented on single-cell multi-omics datasets to infer interactions between transcription factor expression and target gene regulation that can then be functionally tested with laboratory interventions.
 
 ## Repo organisation
 

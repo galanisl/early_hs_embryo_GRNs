@@ -1,1 +1,0 @@
-Scripts for QC, filtering and normalisation of scRNA-seq and liATAC-seq data.
