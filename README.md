@@ -20,3 +20,4 @@ This repository is organised as follows:
 - `03_grn_inference`: Implementation of the different methods for GRN inference.
 - `04_grn_evaluation`: Scripts for statistical and biological evaluation of the inferred GRNs.
 - `05_figures`: Scripts to construct the main and supplementary figures from the manuscript.
+- `06_nuclei_segmentation`: Scripts for the analysis of immunostaining data.
