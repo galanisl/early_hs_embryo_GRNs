@@ -1,0 +1,93 @@
+
+```{r}
+rm(list=ls())
+```
+
+```{r}
+library(readr)
+library(dplyr)
+library(igraph)
+library(visNetwork)
+library(epitools)
+library(ggplot2)
+library(GGally)
+library(psych)
+```
+
+```{r}
+load("../02_data_processing/final_data/sce_integrated_lateBlast_clean.RData") #single cell expression data from human pre-implantation blastocyst
+tfs <- read_tsv("../02_data_processing/final_data/Homo_sapiens_TF.txt") #a list of human TFs
+```
+
+```{r}
+cell_type_seq <- c('Epiblast', 'PE', 'TE')
+cell_type_Abbreviation <- c('Epiblast' = 'EPI', 'PE' = 'PE', 'TE' = 'TE')
+#cell_type_seq <- c('Epiblast')
+TFs_for_plotting <- c('TFAP2C', 'JUND', 'SOX4', 'GCM1')
+
+for (ctype in cell_type_seq)
+{
+  dpath <- paste0("/path/to/MI/GRN/tables/TFnetMIres_tpm_", ctype, ".csv") #Path for GRN table
+  grn_tb <- read_csv(dpath)
+  
+  #Get GRN of TFs
+  grn_tb_TFs <- filter(grn_tb, FROM %in% tfs$Symbol & TO %in% tfs$Symbol)
+  
+  #Get SCE object of epiblast cells
+  if (ctype == "Epiblast"){
+    sce_cell_type <- "Epiblast"
+  } else if (ctype == "PE"){
+    sce_cell_type <- "Primitive endoderm"
+  } else if (ctype == "TE"){
+    sce_cell_type <- "Trophectoderm"
+  }
+       
+  sce_Data <- sce[ ,sce$cell_type == sce_cell_type]
+  
+  #Get all the expressed TFs in the sce_Epiblast
+  Expressed_TFs <- tfs$Symbol %in% rownames(sce_Data@assays@data@listData$tpm)
+  Expressed_TFs <- tfs$Symbol[Expressed_TFs]
+  
+  #Get TPM of all the expressed TFs in epiblast cells
+  All_TF_expression <- sce_Data@assays@data@listData$tpm[Expressed_TFs, ]
+  All_TF_log_expression <- log(All_TF_expression+1, base = 2)
+  
+  All_TF_expression_mean <- apply(All_TF_expression, MARGIN = 1, mean)
+  
+  All_TF_expression_transposed <- data.frame(t(All_TF_log_expression))
+  
+  Data_for_plotting <- All_TF_expression_transposed[,TFs_for_plotting]
+  
+  fig_dir <- 'figs/Spearman_correlation_plots/vs_lineage_markers3/'
+  pdf(file=paste(fig_dir, paste(TFs_for_plotting[1:10], collapse = '_'), '_Spearman_', ctype, '.pdf', sep = ''),width=12,height=5,useDingbats=F);
+  {
+    pairs.panels(Data_for_plotting, 
+            method = 'spearman',
+            ellipses = T,
+            lm = T,
+            stars = T,
+            ci = T,
+            hist.col = 4,
+            cex.cor = 0.5)
+    
+    Title_Text <- paste('TFAP2C correlation with other TFs in ', cell_type_Abbreviation[ctype], sep = '')
+    title(Title_Text, line = 3)
+  }
+  dev.off()
+  
+  TFpair_combinations <- combn(TFs_for_plotting, 2)
+  for (i in 1:length(TFpair_combinations[1,]))
+  {
+    TF1 <- TFpair_combinations[1,i]
+    TF2 <- TFpair_combinations[2,i]
+    TF_Correlation <- cor.test(Data_for_plotting[,TF1], Data_for_plotting[,TF2],  method = "spearman", exact=FALSE)
+    print(paste(ctype, ' --- ', TF1, ' and ', TF2, ': ', sep = ''))
+    print(TF_Correlation$estimate)
+    print(TF_Correlation$p.value)
+  }
+}
+```
+
+
+
+

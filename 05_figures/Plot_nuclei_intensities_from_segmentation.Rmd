@@ -1,0 +1,127 @@
+```{r}
+rm(list=ls())
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+library(psych)
+```
+
+```{r}
+Directory <- "Intensity_files/"
+list.files(path = Directory)
+```
+
+```{r}
+Embryo_Count = 0
+for (file in list.files(path = Directory)){
+  
+  Embryo_Count = Embryo_Count+1
+  if (Embryo_Count == 1){
+    Intensity_table <- read_csv(paste(Directory, file, sep = ""))
+    Intensity_table["Embryo"] = as.character(Embryo_Count)
+  } else{
+    Intensity_table_new <- read_csv(paste(Directory, file, sep = ""))
+    Intensity_table_new["Embryo"] = as.character(Embryo_Count)
+    Intensity_table <- rbind(Intensity_table, Intensity_table_new)
+  }
+  
+}
+
+Intensity_table <- filter(Intensity_table, is.nan(TrackObjects_Label_1) == FALSE) # remove NAN
+  
+```
+
+```{r}
+#C0: DAPI Channel, C2: JUND Channel, C4: TFAP2C Channel
+Columns_to_keep <- c("AreaShape_Area", "Intensity_MeanIntensity_C0", "Intensity_MeanIntensity_C2", "Intensity_MeanIntensity_C4", "TrackObjects_Label_1", "Embryo")
+Intensity_table_trimmed <- Intensity_table[, names(Intensity_table) %in% Columns_to_keep]
+colnames(Intensity_table_trimmed) <- c("Area", "DAPI_intensity", "JUND_intensity", "TFAP2C_intensity", "Objects_Label", "Embryo")
+```
+
+```{r}
+UniqueEmbryoLabels <- unique(Intensity_table_trimmed$Embryo)
+First_loop = T
+
+for (Embryos in UniqueEmbryoLabels){
+  CurrentEmbryo <- filter(Intensity_table_trimmed, Embryo == Embryos)
+  UniqueCellLabels <- unique(CurrentEmbryo$Objects_Label)
+  
+  for (Cells in UniqueCellLabels){
+    Intensities_of_cell <- filter(CurrentEmbryo, Objects_Label == Cells)
+    
+    DAPI_mean <- mean(Intensities_of_cell$DAPI_intensity)
+    JUND_mean <- mean(Intensities_of_cell$JUND_intensity)
+    TFAP2C_mean <- mean(Intensities_of_cell$TFAP2C_intensity)
+    Area_mean <- mean(Intensities_of_cell$Area)
+    
+    if (First_loop){
+      First_loop = F
+      DF_intensities <- data.frame(Cell_label = Cells, DAPI_intensity = DAPI_mean, JUND_intensity = JUND_mean, TFAP2C_intensity = TFAP2C_mean, Area = Area_mean, Embryo = Embryos)
+    }else{
+      DF_intensities_new <- data.frame(Cell_label = Cells, DAPI_intensity = DAPI_mean, JUND_intensity = JUND_mean, TFAP2C_intensity = TFAP2C_mean, Area = Area_mean, Embryo = Embryos)
+      DF_intensities <- rbind(DF_intensities, DF_intensities_new)
+    }
+  }
+}
+
+DF_intensities["JUND_intensity_normalized"] = DF_intensities$JUND_intensity/DF_intensities$DAPI_intensity
+DF_intensities["TFAP2C_intensity_normalized"] = DF_intensities$TFAP2C_intensity/DF_intensities$DAPI_intensity
+#DF_intensities["DAPI intensity"] = DF_intensities$DAPI_intensity
+
+#DF_intensities["Embryo"] = as.character(DF_intensities$Embryo)
+```
+
+```{r}
+Data_for_plotting <- filter(DF_intensities, Embryo == "6")[c("DAPI_intensity", "TFAP2C_intensity_normalized", "JUND_intensity_normalized", "Area")]
+
+Corr_plot <- pairs.panels(Data_for_plotting,
+             smooth = T,
+             scale = F,
+             density = T,
+             ellipses = F,
+             method = "pearson",
+             pch = 20,
+             lm = T,
+             cor = T,
+             hist.col = 7,
+             stars = T,
+             ci = T,
+             cex = 0.7)
+```
+
+```{r}
+pdf(file=paste('MouseEmbryos_CorrPlot_Combined_4.pdf', sep = ''),width=8,height=5,useDingbats=F);{
+ggplot(filter(DF_intensities, Embryo %in% c("1", "6", "7")), aes(x=JUND_intensity_normalized, y=TFAP2C_intensity_normalized, color = Embryo)) + 
+  geom_point(alpha = 0.5) +
+  geom_smooth(method=lm) +
+  #ylim(0,2.5) +
+  xlab("Normalized JUND Intensity") +
+  ylab("Normalized TFAP2C Intensity") +
+  geom_text(
+    label="0.18", 
+    x=5,
+    y=1.6,
+    size = 5,
+    color = "#fa756a") +
+  geom_text(
+    label="0.28*", 
+    x=4,
+    y=1.6,
+    size = 5,
+    color = "#649efc") +
+  geom_text(
+    label="0.46***", 
+    x=3.5,
+    y=1.2,
+    size = 5,
+    color = "#1bb840") +
+  labs(color='Mouse E3.5 Blastocyst') +
+  theme_classic() +
+  theme(text = element_text(size = 15))
+}
+dev.off()
+```

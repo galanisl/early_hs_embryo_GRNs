@@ -11,8 +11,11 @@ The scripts provided in this folder require large data outputs to generate the f
 - `fig_dim_reds.R`: Representation of the scRNA-seq data in UMAP space (Fig. 4A).
 - `fig_markers.R`: Representation of gene expression levels for selected markers in UMAP space (Fig. 4A).
 - `fig_mrk_heatmap.R`: Summary of marker activity analysis as a heatmap (Fig. 4B).
+- `fig_mrk_heatmapANDbarchart_nb_commented.Rmd`: R Markdown notebook to explore marker activity as a heatmap (Fig. 4B).
 - `fig_Vstat.R`: Summary of V-statistic analysis as a barplot and heatmap (Fig. 4C).
-- `grn_visualisation_v4.0_nb_commented.Rmd`: R Markdown notebook for GRN visualisation with directionality (Fig. 5 and 6A)
+- `grn_visualisation_v5.1_nb_commented.Rmd`: R Markdown notebook for GRN visualisation with directionality (Fig. 5 and 6A).
+- `Plot_Spearman_correlations_log_transformed.Rmd`: Correlation plots between the expression of TFAP2C, JUND, SOX4 and GCM1 (Fig. 6B).
+- `Plot_nuclei_intensities_from_segmentation.Rmd`: Nuclei intensity analysis from immunostaining images (Fig. 6C-F)
 
 
 
